@@ -1,14 +1,10 @@
 const http = require('http');
-
-const port = 3000;
-const host = '0.0.0.0'; // Essential for Docker port mapping
-
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, World! The server is alive.\n');
+  res.end('Hello, World!\n'); // This is what the test looks for
 });
 
-server.listen(port, host, () => {
-  console.log(`Server running at http://${host}:${port}/`);
+server.listen(3000, '0.0.0.0', () => {
+  console.log('Server running at http://0.0.0');
 });
