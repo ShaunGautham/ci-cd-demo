@@ -21,7 +21,7 @@ WORKDIR /app
 # Copy only the necessary files from the builder stage
 # This keeps the final image size extremely small and secure
 COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
+#COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/app.js ./
 
 # Expose the app port
