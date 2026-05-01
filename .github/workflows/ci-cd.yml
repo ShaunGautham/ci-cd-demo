@@ -24,20 +24,23 @@ jobs:
          IMAGE_NAME: ci-cd-demo
       run: |
         docker build --tag $DOCKERHUB_USERNAME/$IMAGE_NAME .
-        docker push$DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+        docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
 
   test:
 
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
 
     steps: 
     - name: checkout code
       uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
     - name: Install dependencies
-      uses: apt install npm
+      run: npm install
     - name: Test
-      run: |
-       npm start
-       npm test
+      run: npm test
 
     
