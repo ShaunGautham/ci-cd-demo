@@ -31,10 +31,12 @@ jobs:
     runs-on: unbuntu-latest
 
     steps: 
-    -name: Install dependencies
-     uses: apt isntall npm
-    -name: Test
-     run: |
+    - name: checkout code
+      uses: actions/checkout@v4
+    - name: Install dependencies
+      uses: apt install npm
+    - name: Test
+      run: |
        npm start
        npm test
 
