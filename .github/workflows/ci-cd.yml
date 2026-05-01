@@ -1,14 +1,14 @@
-name: ci-cd-demo
+name: ci-cd-demo-fast
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  test:
+  ci-cd: # Combine into one single job for speed
     runs-on: ubuntu-latest
-    environment: cicd-test 
-    steps: 
+    environment: cicd-test
+    steps:
     - name: checkout code
       uses: actions/checkout@v4
 
@@ -16,32 +16,20 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm' # [SPEED FIX] Caches node_modules to save ~1 min
+        cache: 'npm' # Will be instant after the first successful run
 
-    - name: Install dependencies
-      run: npm ci # [SPEED FIX] Faster and safer for CI than 'npm install'
+    - name: Install & Test
+      run: |
+        npm ci
+        npm test
 
-    - name: Test
-      run: npm test
-
-  build:
-    needs: test # [LOGIC FIX] Build only starts if tests pass
-    runs-on: ubuntu-latest
-    environment: cicd-test
-    steps:
-    - name: checkout code
-      uses: actions/checkout@v4
-
-    - name: Login to Dockerhub
-      uses: docker/login-action@v3
+    - name: Login & Build Docker
+      uses: [docker/login-action](https://github.com)@v3
       with: 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and Push Docker image
-      env: 
-         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-         IMAGE_NAME: ci-cd-demo
+    - name: Build and Push
       run: |
-        docker build --tag $DOCKERHUB_USERNAME/$IMAGE_NAME .
-        docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+        docker build --tag ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo .
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:latest
