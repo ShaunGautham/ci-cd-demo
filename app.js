@@ -1,7 +1,7 @@
 const http = require('http');
 
 const port = 3000;
-const host = '0.0.0.0'; // Important: Listen on all network interfaces inside the container
+const host = '0.0.0.0'; // Essential for Docker port mapping
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
