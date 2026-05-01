@@ -1,17 +1,30 @@
-const { spawnSync } = require('child_process');
-const assert = require('assert');
+const { spawn } = require('child_process');
+const http = require('http');
 
-// Run 'node app.js' and capture the output
-const child = spawnSync('node', ['app.js'], { encoding: 'utf8' });
-const output = child.stdout.trim();
+// 1. Start the server as a background process
+const child = spawn('node', ['app.js']);
 
-console.log(`Checking output: "${output}"`);
-
-try {
-  assert.strictEqual(output, 'Hello, World!');
-  console.log('✅ TEST PASSED: The app printed Hello, World!');
-} catch (err) {
-  console.error('❌ TEST FAILED: Output did not match.');
-  console.error(`Expected: "Hello, World!" | Received: "${output}"`);
-  process.exit(1); // Exit with error code for Docker/CI
-}
+// 2. Wait 2 seconds for the server to start, then check it
+setTimeout(() => {
+  http.get('http://localhost:3000', (res) => {
+    let data = '';
+    res.on('data', (chunk) => { data += chunk; });
+    res.on('end', () => {
+      console.log(`Received from server: "${data.trim()}"`);
+      
+      if (data.includes('Hello, World!')) {
+        console.log('✅ TEST PASSED');
+        child.kill(); // Stop the server so the test can finish
+        process.exit(0);
+      } else {
+        console.error('❌ TEST FAILED: Unexpected response');
+        child.kill();
+        process.exit(1);
+      }
+    });
+  }).on('error', (err) => {
+    console.error('❌ TEST FAILED: Could not connect to server', err.message);
+    child.kill();
+    process.exit(1);
+  });
+}, 2000); 
