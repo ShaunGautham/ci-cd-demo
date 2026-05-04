@@ -37,10 +37,13 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build the Docker image
+
+    - name: Build and push
+      uses: docker/build-push-action@v6
       env: 
          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
          IMAGE_NAME: ci-cd-demo
-      run: |
-        docker build --tag $DOCKERHUB_USERNAME/$IMAGE_NAME .
-        docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+      with:
+        context: . # Directory containing your Dockerfile
+        push: true
+        tags: $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
