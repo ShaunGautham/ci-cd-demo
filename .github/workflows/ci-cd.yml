@@ -41,9 +41,8 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       env: 
-         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
          IMAGE_NAME: ci-cd-demo
       with:
         context: . # Directory containing your Dockerfile
         push: true
-        tags: $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
