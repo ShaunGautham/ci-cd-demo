@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "as-southeast-1"
+  region = "ap-southeast-1"
 }
 
 resource "aws_vpc" "ci-cd-demo" {
