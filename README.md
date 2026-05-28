@@ -1,6 +1,6 @@
 # CI/CD Demo
 
-Demo project for testing, building, and publishing a simple Node.js Hello World app using Docker and CI/CD.
+Demo project for testing, building, and publishing a simple Node.js Hello World app using Docker and CI/CD with GitHub Actions and AWS infrastructure provisioning using Terraform.
 
 ## Project Overview
 
@@ -11,7 +11,6 @@ The CI/CD pipeline runs the test first. If the test passes, it builds a Docker i
 ## Project Structure
 
 ```text
-
 ci-cd-demo/
 ├── .github/
 │   └── workflows/
@@ -21,4 +20,5 @@ ci-cd-demo/
 ├── app.js
 ├── package-lock.json
 ├── package.json
+├── terraform.tf
 └── test.js
