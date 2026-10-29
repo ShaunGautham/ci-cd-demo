@@ -6,7 +6,7 @@ Demo project for testing, building, and publishing a simple Node.js Hello World 
 
 This project contains a simple `app.js` file, a `test.js` file, and a `Dockerfile`.
 
-The CI/CD pipeline runs the test first. If the test passes, it builds a Docker image and pushes the image to Docker Hub.
+The CI/CD pipeline runs the test first. If the test passes, it builds a Docker image and it will pushes the image to Docker Hub.
 
 ## Project Structure
 
